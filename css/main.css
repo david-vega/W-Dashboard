@@ -1,0 +1,23 @@
+body{ background: #333333; }
+
+/*.mdl-card__media{
+  height: 80px;
+  width: 80px;
+}
+
+.mdl-card__supporting-text{
+  padding: 5px;
+}
+
+.mdl-list__item{
+  padding: 5px;
+}
+
+ul{
+  margin: 0;
+}*/
+.avatar{
+  border-radius: 40px;
+  float: right;
+  margin-top: 16px;
+}
