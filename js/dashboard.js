@@ -9,12 +9,10 @@ $(function() {
     environments.forEach(function(environment) {
       var htmlTemplate = showInformation(service, environment, columnsSize);
       $('#'+ service).append(htmlTemplate);
-
-      renderHealthCheck(service, environment);
-      renderGitInformation(service, environment);
-      renderContainerInformation(service, environment);
     });
   });
+
+  updateInformationLoop(services, environments)
 });
 
 function showInformation(service, environment, columnsSize){
@@ -22,7 +20,7 @@ function showInformation(service, environment, columnsSize){
     <div class="mdl-card mdl-cell mdl-cell--`+ columnsSize +`-col" id="`+ service +'-'+ environment +`">
       <div class="mdl-card__title status-no-info">
         <h2 class="mdl-card__title-text" id="status-title"></h2>
-        <span class="service">`+ service +' '+ environment +`</span>
+        <span class="service">`+ service +' <strong class="environment">'+ environment +`</strong></span>
       </div>
       <div class="github-information">
         <div class="mdl-card__supporting-text">
@@ -38,6 +36,7 @@ function showInformation(service, environment, columnsSize){
             </li>
             <li class="mdl-list__item git-sha">
               <span class="mdl-list__item-primary-content">
+                ref:&nbsp
                 <a class="commit-tease-sha" href="" target="blank">
                 </a>
               </span>
@@ -80,10 +79,14 @@ function renderHealthCheck(service, environment){
     contentType: 'application/json',
     success: function (data) {
       var status = data.status || 'Something went wrong';
+      statusArray = [200, 500]
+      status = statusArray[Math.floor(Math.random() * statusArray.length)]
       handleStatusResponse(status, service, environment);
     },
     error: function (data) {
       var status = data.status || 'Something went wrong';
+      statusArray = [200, 500]
+      status = statusArray[Math.floor(Math.random() * statusArray.length)]
       handleStatusResponse(status, service, environment);
     }
   });
@@ -119,15 +122,15 @@ function handleGitResponse(email, revisionNumber, branch, service, environment){
 
   var href = 'https://github.com/OtoAnalytics/'+ service +'/commit/'+ revisionNumber;
   $(id + ' .git-sha a')
-    .text('ref: '+ revisionNumber.substring(0, 7))
+    .text(revisionNumber.substring(0, 7))
     .attr('href', href);
 };
 
 function renderContainerInformation(service, environment){
-  var instances = 2;
-  var cpu = 20;
-  var memory = 30;
-  var disk = 50;
+  var instances = (Math.random() * (4 - 1) + 1).toFixed(0);
+  var cpu = (Math.random() * (100 - 0) + 0).toFixed(2);
+  var memory = (Math.random() * (100 - 0) + 0).toFixed(2);
+  var disk = (Math.random() * (100 - 0) + 0).toFixed(2);
 
   handleContainerResponse(instances, memory, cpu, disk, service, environment);
 };
@@ -140,3 +143,22 @@ function handleContainerResponse(instances, memory, cpu, disk, service, environm
   $(id +' .disk span').text('disk: '+ disk +'%')
   $(id +' .instances span').text('instances: '+ instances)
 };
+
+function updateInformation(services, environments){
+  services.forEach(function(service){
+    environments.forEach(function(environment) {
+      renderHealthCheck(service, environment);
+      renderGitInformation(service, environment);
+      renderContainerInformation(service, environment);
+    });
+  });
+};
+
+function updateInformationLoop(services, environments){
+  var time = 10000;
+  updateInformation(services, environments);
+
+  setTimeout(function () {
+    updateInformationLoop(services, environments);
+  }, time);
+}

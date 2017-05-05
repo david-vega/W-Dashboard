@@ -1,4 +1,6 @@
-body{ background: #333333; }
+body{
+  background: #333333;
+}
 
 .avatar{
   border-radius: 40px;
@@ -32,4 +34,12 @@ body{ background: #333333; }
 
 span.service{
   padding-left: 15px;
+}
+
+a {
+  color: #3e4ab8;
+}
+
+.environment{
+  color: #333333;
 }
