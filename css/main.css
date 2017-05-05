@@ -9,3 +9,27 @@ body{ background: #333333; }
 .mdl-card__supporting-text{
   padding: 0;
 }
+
+.mdl-grid {
+  margin: initial;
+}
+
+.status-down{
+  background: #b83e3e;
+}
+
+.status-up{
+  background: #3eb83f;
+}
+
+.status-no-info{
+  background: #3e4ab8;
+}
+
+.mdl-card__title{
+  color: #fff;
+}
+
+span.service{
+  padding-left: 15px;
+}

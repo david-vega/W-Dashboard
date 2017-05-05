@@ -20,9 +20,9 @@ $(function() {
 function showInformation(service, environment, columnsSize){
   return `
     <div class="mdl-card mdl-cell mdl-cell--`+ columnsSize +`-col" id="`+ service +'-'+ environment +`">
-      <div class="mdl-card__title">
+      <div class="mdl-card__title status-no-info">
         <h2 class="mdl-card__title-text" id="status-title"></h2>
-        <span>`+ service +' '+ environment +`</span>
+        <span class="service">`+ service +' '+ environment +`</span>
       </div>
       <div class="github-information">
         <div class="mdl-card__supporting-text">
@@ -86,7 +86,13 @@ function renderHealthCheck(service, environment){
 };
 
 function handleStatusResponse(status, service, environment){
-  $('#'+ service +'-'+ environment +' h2').text("Status: "+ status);
+  var id = '#'+ service +'-'+ environment +' .mdl-card__title';
+
+  $(id +' h2').text("Status: "+ status);
+  $(id).removeClass('status-down').removeClass('status-up').removeClass('status-no-info');
+
+  var newStatus = status == 200 && 'status-up' || 'status-down';
+  $(id).addClass(newStatus);
 };
 
 function renderGitInformation(service, environment){
