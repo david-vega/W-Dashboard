@@ -32,6 +32,10 @@ function showInformation(service, environment, columnsSize){
               <span class="mdl-list__item-primary-content">
               </span>
             </li>
+            <li class="mdl-list__item branch">
+              <span class="mdl-list__item-primary-content">
+              </span>
+            </li>
             <li class="mdl-list__item git-sha">
               <span class="mdl-list__item-primary-content">
                 <a class="commit-tease-sha" href="" target="blank">
@@ -98,18 +102,20 @@ function handleStatusResponse(status, service, environment){
 function renderGitInformation(service, environment){
   var email =  "zetacu@gmail.com";
   var revisionNumber = "035e8a8693851d276cba9e2e96939717c5549994";
+  var branch = 'master'
 
-  handleGitResponse(email, revisionNumber, service, environment);
+  handleGitResponse(email, revisionNumber, branch, service, environment);
 };
 
-function handleGitResponse(email, revisionNumber, service, environment){
+function handleGitResponse(email, revisionNumber, branch, service, environment){
   var id = '#'+ service +'-'+ environment + ' .github-information';
 
   $(id + ' img')
     .attr('src', 'https://www.gravatar.com/avatar/'+ md5(email))
     .attr('alt', email);
 
-  $(id + ' .email span').text(email);
+  $(id + ' .email span').text('email: '+ email);
+  $(id + ' .branch span').text('branch: '+ branch);
 
   var href = 'https://github.com/OtoAnalytics/'+ service +'/commit/'+ revisionNumber;
   $(id + ' .git-sha a')
