@@ -79,13 +79,13 @@ function renderHealthCheck(service, environment){
     contentType: 'application/json',
     success: function (data) {
       var status = data.status || 'Something went wrong';
-      statusArray = [200, 500]
+      statusArray = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 404, 418, 500]
       status = statusArray[Math.floor(Math.random() * statusArray.length)]
       handleStatusResponse(status, service, environment);
     },
     error: function (data) {
       var status = data.status || 'Something went wrong';
-      statusArray = [200, 500]
+      statusArray = [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 404, 418, 500]
       status = statusArray[Math.floor(Math.random() * statusArray.length)]
       handleStatusResponse(status, service, environment);
     }
@@ -127,21 +127,22 @@ function handleGitResponse(email, revisionNumber, branch, service, environment){
 };
 
 function renderContainerInformation(service, environment){
-  var instances = (Math.random() * (4 - 1) + 1).toFixed(0);
+  var desiredCount = 3;
+  var runningCount = (Math.random() * (desiredCount - 1) + 1).toFixed(0);
   var cpu = (Math.random() * (100 - 0) + 0).toFixed(2);
   var memory = (Math.random() * (100 - 0) + 0).toFixed(2);
   var disk = (Math.random() * (100 - 0) + 0).toFixed(2);
 
-  handleContainerResponse(instances, memory, cpu, disk, service, environment);
+  handleContainerResponse(desiredCount, runningCount, memory, cpu, disk, service, environment);
 };
 
-function handleContainerResponse(instances, memory, cpu, disk, service, environment){
+function handleContainerResponse(desiredCount, runningCount, memory, cpu, disk, service, environment){
   var id = '#'+ service +'-'+ environment + ' .container-information';
 
   $(id +' .cpu span').text('cpu: '+ cpu +'%')
   $(id +' .memory span').text('memory: '+ memory +'%')
   $(id +' .disk span').text('disk: '+ disk +'%')
-  $(id +' .instances span').text('instances: '+ instances)
+  $(id +' .instances span').text('instances: '+ runningCount +' of '+ desiredCount)
 };
 
 function updateInformation(services, environments){
